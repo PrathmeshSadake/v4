@@ -53,7 +53,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       setState(() {
         _date = date;
       });
-      _dateController.text = _dateFormatter.(date);
+      _dateController.text = _dateFormatter.format(date);
     }
   }
 
