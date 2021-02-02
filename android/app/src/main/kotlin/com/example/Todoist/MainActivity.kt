@@ -1,4 +1,4 @@
-package com.example.scheduler
+package com.example.Todoist
 
 import io.flutter.embedding.android.FlutterActivity
 

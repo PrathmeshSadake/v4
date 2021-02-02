@@ -1,4 +1,4 @@
-# scheduler
+# Todoist
 
 A new Flutter project.
 
