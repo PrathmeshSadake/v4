@@ -1,3 +1,5 @@
+import 'package:Todoist/helpers/db_helper.dart';
+import 'package:Todoist/models/task.dart';
 import 'package:Todoist/widgets/todo.dart';
 import 'package:flutter/material.dart';
 
@@ -42,6 +44,13 @@ class _TaskpageState extends State<Taskpage> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: TextField(
+                            onSubmitted: (value) async {
+                              DatabaseHelper _dbHelper = DatabaseHelper();
+                              Task _newTask = Task(
+                                title: value,
+                              );
+                              await _dbHelper.insertTask(_newTask);
+                            },
                             decoration: InputDecoration(
                               hintText: 'Enter Task Title',
                               border: InputBorder.none,
