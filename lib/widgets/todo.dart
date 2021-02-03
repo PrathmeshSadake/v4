@@ -21,6 +21,10 @@ class Todo extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
               color: isDone ? Color(0xFF7349FE) : Colors.grey[200],
+              border: Border.all(
+                color: Colors.grey[800],
+                width: 1.5,
+              ),
             ),
             child: Image.asset(
               'assets/images/check_icon.png',
