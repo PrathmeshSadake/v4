@@ -1,3 +1,4 @@
+import 'package:Todoist/helpers/db_helper.dart';
 import 'package:flutter/material.dart';
 import '../widgets/taskcard.dart';
 import '../widgets/scrollBehavior.dart';
@@ -9,6 +10,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  DatabaseHelper _dbHelper = DatabaseHelper();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,21 +36,22 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ),
                   Expanded(
-                    child: ScrollConfiguration(
-                      behavior: NoGlowBehaviour(),
-                      child: ListView(
-                        children: [
-                          TaskCard(
-                            title: 'Get Started',
-                            description:
-                                'Hello User! Welcome to Todoist, this is a default task you can simply edit or delete this one to start using the app.',
-                          ),
-                          TaskCard(),
-                          TaskCard(),
-                          TaskCard(),
-                        ],
-                      ),
-                    ),
+                    child: FutureBuilder(
+                        future: _dbHelper.getTasks(),
+                        builder: (context, snapshot) {
+                          return ScrollConfiguration(
+                            behavior: NoGlowBehaviour(),
+                            child: ListView.builder(
+                              itemBuilder: (context, index) {
+                                return TaskCard(
+                                  title: snapshot.data[index].title,
+                                  description: snapshot.data[index].description,
+                                );
+                              },
+                              itemCount: snapshot.data.length(),
+                            ),
+                          );
+                        }),
                   )
                 ],
               ),
@@ -57,11 +60,15 @@ class _HomepageState extends State<Homepage> {
                 right: 0.0,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(
+                    Navigator.of(context)
+                        .push(
                       MaterialPageRoute(
                         builder: (ctx) => Taskpage(),
                       ),
-                    );
+                    )
+                        .then((value) {
+                      setState(() {});
+                    });
                   },
                   child: Container(
                     width: 60,
