@@ -28,45 +28,64 @@ class _HomepageState extends State<Homepage> {
                 children: [
                   Container(
                     margin: EdgeInsets.only(
-                      top: 32.0,
-                      bottom: 32.0,
+                      top: 28.0,
+                      bottom: 28.0,
                     ),
                     child: Image.asset(
                       'assets/images/logo.png',
+                      height: 50,
                     ),
                   ),
                   Expanded(
                     child: FutureBuilder(
-                        future: _dbHelper.getTasks(),
-                        builder: (context, snapshot) {
-                          return ScrollConfiguration(
-                            behavior: NoGlowBehaviour(),
-                            child: ListView.builder(
-                              itemBuilder: (context, index) {
-                                return TaskCard(
+                      future: _dbHelper.getTasks(),
+                      builder: (context, snapshot) {
+                        return ScrollConfiguration(
+                          behavior: NoGlowBehaviour(),
+                          child: ListView.builder(
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (ctx) => Taskpage(
+                                        task: snapshot.data[index],
+                                      ),
+                                    ),
+                                  ).then((value) {
+                                    setState(() {});
+                                  });
+                                },
+                                child: TaskCard(
                                   title: snapshot.data[index].title,
                                   description: snapshot.data[index].description,
-                                );
-                              },
-                              itemCount: snapshot.data.length(),
-                            ),
-                          );
-                        }),
+                                ),
+                              );
+                            },
+                            itemCount: snapshot.data == null
+                                ? 0
+                                : snapshot.data.length,
+                          ),
+                        );
+                      },
+                    ),
                   )
                 ],
               ),
               Positioned(
-                bottom: 24.0,
+                bottom: 34.0,
                 right: 0.0,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.of(context)
-                        .push(
+                    Navigator.push(
+                      context,
                       MaterialPageRoute(
-                        builder: (ctx) => Taskpage(),
+                        builder: (ctx) => Taskpage(
+                          task: null,
+                        ),
                       ),
-                    )
-                        .then((value) {
+                    ).then((value) {
                       setState(() {});
                     });
                   },
@@ -74,7 +93,6 @@ class _HomepageState extends State<Homepage> {
                     width: 60,
                     height: 60,
                     decoration: BoxDecoration(
-                      // color: Color(0xFF7349FE),
                       gradient: LinearGradient(
                         colors: [Color(0xFF7349FE), Color(0xFF643FD8)],
                         begin: Alignment(0.0, -1.0),
@@ -84,7 +102,11 @@ class _HomepageState extends State<Homepage> {
                         20,
                       ),
                     ),
-                    child: Image.asset('assets/images/add_icon.png'),
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 30,
+                    ),
                   ),
                 ),
               ),
